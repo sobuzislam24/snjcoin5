@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Premium App</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+<div class="app">
+
+  <!-- HOME -->
+  <section class="screen active" id="homeScreen">
+    <header class="topbar">
+      <div><span class="gem">💎</span> Premium App</div>
+      <button class="icon-btn" onclick="showScreen('profileScreen')">👤</button>
+    </header>
+
+    <main class="content">
+      <div class="card user-card">
+        <div class="avatar">👤</div>
+        <div>
+          <h2 id="homeUsername">@username</h2>
+          <p>Telegram ID: <span id="homeTelegramId">123456</span></p>
+        </div>
+        <div class="status inactive" id="homeStatus">🔴 INACTIVE</div>
+      </div>
+
+      <div class="card center-card">
+        <p class="label">Available Balance</p>
+        <h1 id="homeBalance">$0.00</h1>
+        <button class="wallet-btn" onclick="showScreen('walletScreen')">💰 Wallet</button>
+      </div>
+
+      <div class="card notice-card">
+        <h3>🔒 Account Inactive</h3>
+        <p>Activate a plan to continue</p>
+      </div>
+
+      <div class="card center-card">
+        <p class="label">Current Plan</p>
+        <h3 id="homePlan">No Active Plan</h3>
+      </div>
+
+      <div class="card center-card">
+        <p class="label">Daily Ads</p>
+        <h3 id="homeAds">0 / 0 Remaining</h3>
+      </div>
+    </main>
+
+    <nav class="bottom-nav">
+      <button class="nav active-nav" onclick="showScreen('homeScreen')">🏠<span>Home</span></button>
+      <button class="nav" onclick="showScreen('plansScreen')">💎<span>Plans</span></button>
+      <button class="nav" onclick="showAdsInfo()">📺<span>Ads</span></button>
+      <button class="nav" onclick="showScreen('walletScreen')">💰<span>Wallet</span></button>
+      <button class="nav" onclick="showScreen('profileScreen')">👤<span>Profile</span></button>
+    </nav>
+  </section>
+
+  <!-- WALLET -->
+  <section class="screen" id="walletScreen">
+    <header class="topbar">
+      <button class="back" onclick="showScreen('homeScreen')">←</button>
+      <div>Wallet</div>
+    </header>
+    <main class="content">
+      <div class="wallet-balance">
+        <p>Wallet Balance</p>
+        <h1 id="walletBalance">$0.00</h1>
+      </div>
+
+      <button class="menu-card" onclick="showScreen('depositScreen')">
+        <span class="circle purple">➕</span>
+        <span><b>Deposit</b><small>Add USD balance</small></span><i>›</i>
+      </button>
+
+      <button class="menu-card" onclick="withdrawRequest()">
+        <span class="circle green">💸</span>
+        <span><b>Withdraw</b><small>Request USD withdrawal</small></span><i>›</i>
+      </button>
+
+      <button class="menu-card" onclick="showHistory()">
+        <span class="circle orange">📜</span>
+        <span><b>Transaction History</b><small>View your requests</small></span><i>›</i>
+      </button>
+    </main>
+  </section>
+
+  <!-- DEPOSIT -->
+  <section class="screen" id="depositScreen">
+    <header class="topbar">
+      <button class="back" onclick="showScreen('walletScreen')">←</button>
+      <div>Deposit</div>
+    </header>
+    <main class="content">
+      <div class="form-card">
+        <h3>Select Payment Method</h3>
+        <div class="payment-methods">
+          <button class="payment selected" id="bkashBtn" onclick="selectPayment('bKash')">bKash</button>
+          <button class="payment" id="nagadBtn" onclick="selectPayment('Nagad')">🟠<br>Nagad</button>
+        </div>
+
+        <div class="info-box">
+          <p>• 1 dollar = 120 tk</p>
+          <p>• bKash/Nagad number = <b>01310586294</b></p>
+        </div>
+
+        <label>Amount (USD)</label>
+        <input type="number" id="depositAmount" min="1" step="0.01" value="10.00" />
+
+        <label>Transaction ID</label>
+        <input type="text" id="transactionId" placeholder="Enter Transaction ID" />
+
+        <button class="primary-btn" onclick="submitDeposit()">Submit Deposit</button>
+        <p class="small-note">Deposit requests remain pending until verified by an admin.</p>
+      </div>
+    </main>
+  </section>
+
+  <!-- PLANS -->
+  <section class="screen" id="plansScreen">
+    <header class="topbar">
+      <button class="back" onclick="showScreen('homeScreen')">←</button>
+      <div>Premium Plans</div>
+    </header>
+    <main class="content plans">
+      <div class="plan-card">
+        <div class="plan-icon">💎</div>
+        <div class="plan-body"><h2>Basic</h2><h1>$5.00</h1><p>✔️ 7 Days</p><p>✔️ 10 Ads / Day</p><button onclick="purchasePlan('Basic', 5, 7, 10)">Purchase</button></div>
+      </div>
+      <div class="plan-card">
+        <div class="plan-icon">💎</div>
+        <div class="plan-body"><h2>Standard</h2><h1>$15.00</h1><p>✔️ 30 Days</p><p>✔️ 30 Ads / Day</p><button onclick="purchasePlan('Standard', 15, 30, 30)">Purchase</button></div>
+      </div>
+      <div class="plan-card">
+        <div class="plan-icon">👑</div>
+        <div class="plan-body"><h2>Premium</h2><h1>$30.00</h1><p>✔️ 60 Days</p><p>✔️ 60 Ads / Day</p><button onclick="purchasePlan('Premium', 30, 60, 60)">Purchase</button></div>
+      </div>
+    </main>
+  </section>
+
+  <!-- PROFILE -->
+  <section class="screen" id="profileScreen">
+    <header class="topbar">
+      <button class="back" onclick="showScreen('homeScreen')">←</button>
+      <div>Profile</div>
+    </header>
+    <main class="content profile">
+      <div class="profile-avatar">👤</div>
+      <h1 id="profileUsername">@username</h1>
+
+      <div class="profile-row"><span>Telegram ID</span><b id="profileTelegramId">123456789</b></div>
+      <div class="profile-row"><span>Account Status</span><b class="inactive" id="profileStatus">🔴 INACTIVE</b></div>
+      <div class="profile-row"><span>Current Plan</span><b id="profilePlan">No Active Plan</b></div>
+    </main>
+  </section>
+
+  <div class="toast" id="toast"></div>
+</div>
+
+<script type="module" src="firebase.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
